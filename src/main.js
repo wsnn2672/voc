@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const docRef = doc(db, "Words", "doc");
 
     await updateDoc(docRef, {
-      [enword]: trword
+      [capitalizeRest(enword)]: capitalizeRest(trword)
     });
 
     console.log("Kelime eklendi:", enword, "=", trword);
@@ -206,6 +206,11 @@ document.addEventListener('DOMContentLoaded', () => {
         listContainer.appendChild(li);
       });
     }
+  }
+
+  function capitalizeRest(word) {
+    if (!word) return "";
+    return word.charAt(0) + word.slice(1).toLowerCase();
   }
 
   function escapeHTML(str) {
