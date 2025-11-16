@@ -1,0 +1,247 @@
+/* =========================================
+   TEMEL AYARLAR
+========================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+:root {
+    --bg-color: #f4f7f6;
+    --text-color: #1a1a1a;
+    --card-bg: #ffffff;
+    --border-color: #e0e0e0;
+    --primary-color: #007aff;
+    --primary-hover: #0056b3;
+    --text-secondary: #555;
+    --ai-bg: #e9f5ff;
+}
+
+body.dark-mode {
+    --bg-color: #121212;
+    --text-color: #f0f0f0;
+    --card-bg: #1e1e1e;
+    --border-color: #333;
+    --primary-color: #0a84ff;
+    --primary-hover: #0060df;
+    --text-secondary: #aaa;
+    --ai-bg: #2c3e50;
+}
+
+/* =========================================
+   CONTAINER & HEADER
+========================================= */
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 30px;
+}
+
+header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+/* =========================================
+   BUTONLAR (Tema ve Dil)
+========================================= */
+#theme-toggle, #lang-toggle {
+    position: fixed;
+    top: 10px;
+    padding: 6px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    z-index: 1000;
+    border-radius: 50%;
+    border: 2px solid var(--border-color);
+    background: transparent;
+    color: var(--text-color);
+    transition: all 0.2s ease;
+}
+
+#theme-toggle:hover, #lang-toggle:hover {
+    background-color: var(--border-color);
+}
+
+/* Butonların konumu */
+#theme-toggle { right: 10px; }
+#lang-toggle { right: 80px; }
+
+/* =========================================
+   KELİME EKLEME FORMU
+========================================= */
+#add-word-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.form-group {
+    flex: 1 1 200px;
+}
+
+#add-word-form input {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid var(--border-color);
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+#add-word-form button {
+    padding: 14px 25px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+#add-word-form button:hover {
+    background-color: var(--primary-hover);
+}
+
+/* =========================================
+   KELİME LİSTESİ
+========================================= */
+.vocab-list-container h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+#vocab-list {
+    list-style: none;
+}
+
+#vocab-list li {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.word-pair {
+    display: flex;               /* yatay flex */
+    justify-content: space-between; /* solda ve sağda */
+    align-items: center;         /* dikey ortala */
+    padding: 4px 0;
+    width: 100%;
+}
+
+.word-pair span {
+    display: block;              /* inline-block yerine block */
+    min-width: 40%;              /* kutu genişliği ver, flex shrink engelle */
+}
+
+.word-pair.en-left .english {
+    order: 0;
+    font-size: 1.3rem;
+    text-align: left;
+}
+
+.word-pair.en-left .turkish {
+    order: 1;
+    font-size: 1.1rem;
+    text-align: right;
+}
+
+.word-pair.tr-left .english {
+    order: 1;
+    font-size: 1.1rem;
+    text-align: right;
+}
+
+.word-pair.tr-left .turkish {
+    order: 0;
+    font-size: 1.3rem;
+    text-align: left;
+}
+
+
+
+/* =========================================
+   AI BUTONU VE AÇIKLAMA
+========================================= */
+.ai-button {
+    background-color: transparent;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.ai-button:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.ai-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.description-container {
+    width: 100%;
+    margin-top: 15px;
+    padding: 15px;
+    background-color: var(--ai-bg);
+    border-radius: 8px;
+    line-height: 1.6;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================
+   HARF BAŞLIKLARI VE SEPERATOR
+========================================= */
+.group-header {
+    display: flex;
+    align-items: center;
+    margin-top: 8px;
+    font-weight: bold;
+    font-size: 14px !important;  /* Küçültülmüş */
+}
+
+.group-header .header-line {
+    display: inline-block;    /* block yerine inline-block */
+    flex-grow: 1;
+    height: 1px;
+    background-color: #aaa;
+    margin-left: 8px;
+    vertical-align: middle;   /* font ile hizala */
+}
