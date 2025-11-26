@@ -10,8 +10,9 @@
 
 <div class="container">
   <header>
-    <h1>ISEF Team Vocabulary</h1>
-    <button id="lang-toggle">EN</button>
+    <h1 id="page-title">ISEF Team Vocabulary</h1>
+    <button id="mode-toggle">Acr</button>
+    <button id="lang-toggle">🔃</button>
     <button id="theme-toggle"></button>
   </header>
 
@@ -23,11 +24,11 @@
       <div class="form-group">
         <input type="text" id="turkish-word" placeholder="Turkish Word" required>
       </div>
-      <button type="submit">Add Word</button>
+      <button type="submit" id="submitBtn">Add Word</button>
     </form>
 
     <section class="vocab-list-container">
-      <h2>Word List</h2>
+      <h2 id="page-title2">Word List</h2>
       <ul id="vocab-list">
       </ul>
     </section>

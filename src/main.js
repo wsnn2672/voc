@@ -16,14 +16,19 @@ var language = "English";
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async (e) => {
   const themeToggle = document.getElementById('theme-toggle');
   const langToggle = document.getElementById('lang-toggle');
+  const modeToggle = document.getElementById('mode-toggle');
+  const submitBtn = document.getElementById('submitBtn');
   const addForm = document.getElementById('add-word-form');
   const englishInput = document.getElementById('english-word');
   const turkishInput = document.getElementById('turkish-word');
   const vocabList = document.getElementById('vocab-list');
-  loadWordsFromFirestore();
+  const page_title = document.getElementById('page-title');
+  const page_title2 = document.getElementById('page-title2');
+  localStorage.setItem('word-mode', 'vocabulary');
+  await loadWordsFromFirestore();
 
   const savedTheme = localStorage.getItem('theme');
   if (savedTheme === 'dark') {
@@ -35,8 +40,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function loadWordsFromFirestore() {
     const docRef = doc(db, "Words", "doc");
-    const docSnap = await getDoc(docRef);
+    const acrRef = doc(db, "Words", "acr");
 
+    const mode = localStorage.getItem('word-mode');
+    const activeRef = mode === 'acronym' ? acrRef : docRef;
+
+    const docSnap = await getDoc(activeRef);
     if (docSnap.exists()) {
       const data = docSnap.data();
 
@@ -47,19 +56,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
       renderGroupedWords(wordsArray);
     } else {
-      vocabList.innerHTML = "<p>Henüz kelime yok.</p>";
+      vocabList.innerHTML = "<p>There is no word.</p>";
     }
   }
 
 
-  async function addWordToFirestore(enword, trword) {
+  async function addWordToFirestore(key, value) {
     const docRef = doc(db, "Words", "doc");
+    const acrRef = doc(db, "Words", "acr");
 
-    await updateDoc(docRef, {
-      [capitalizeRest(enword)]: capitalizeRest(trword)
+    const mode = localStorage.getItem('word-mode');
+    const activeRef = mode === 'acronym' ? acrRef : docRef;
+
+    await updateDoc(activeRef, {
+      [capitalizeRest(key)]: capitalizeRest(value)
     });
 
-    console.log("Kelime eklendi:", enword, "=", trword);
+    console.log("Word Added:", key, "=", value);
   }
 
   themeToggle.addEventListener('click', () => {
@@ -74,17 +87,37 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  modeToggle.addEventListener('click', async (e) => {
+    document.body.classList.toggle('word-mode');
+    if (localStorage.getItem('word-mode') === 'acronym') {
+      localStorage.setItem('word-mode', 'vocabulary');
+      modeToggle.textContent = 'Acr';
+      page_title.textContent = 'ISEF Team Vocabulary';
+      englishInput.placeholder = 'English Word';
+      turkishInput.placeholder = 'Turkish Word';
+      page_title2.textContent = 'Word List';
+      submitBtn.textContent = 'Add Word';
+    } else {
+      localStorage.setItem('word-mode', 'acronym');
+      modeToggle.textContent = 'Voc';
+      page_title.textContent = 'ISEF Team Acronym';
+      englishInput.placeholder = 'Acronym';
+      turkishInput.placeholder = 'Full Form';
+      page_title2.textContent = 'Acronym List';
+      submitBtn.textContent = 'Add Acronym';
+    }
+    await loadWordsFromFirestore();
+  });
+
   langToggle.addEventListener('click', async (e) => {
     document.body.classList.toggle('language');
 
     if (document.body.classList.contains('language')) {
       localStorage.setItem('language', 'Türkçe');
       language = 'Türkçe';
-      langToggle.textContent = 'TR';
     } else {
       localStorage.setItem('language', 'English');
       language = 'English';
-      langToggle.textContent = 'EN';
     }
 
     //
@@ -106,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-
+  /*
   vocabList.addEventListener('click', (e) => {
     if (e.target.classList.contains('ai-button')) {
       const button = e.target;
@@ -122,6 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   });
+  */
 
   async function getAIDescription(word, container, button) {
     button.textContent = 'Düşünüyor...';

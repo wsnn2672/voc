@@ -62,7 +62,7 @@ header h1 {
 /* =========================================
    BUTONLAR (Tema ve Dil)
 ========================================= */
-#theme-toggle, #lang-toggle {
+#theme-toggle, #lang-toggle, #mode-toggle {
     position: fixed;
     top: 10px;
     padding: 6px 12px;
@@ -82,7 +82,8 @@ header h1 {
 
 /* Butonların konumu */
 #theme-toggle { right: 10px; }
-#lang-toggle { right: 80px; }
+#lang-toggle { right: 70px; }
+#mode-toggle { right: 130px; }
 
 /* =========================================
    KELİME EKLEME FORMU
