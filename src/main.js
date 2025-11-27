@@ -68,11 +68,18 @@ document.addEventListener('DOMContentLoaded', async (e) => {
     const mode = localStorage.getItem('word-mode');
     const activeRef = mode === 'acronym' ? acrRef : docRef;
 
-    await updateDoc(activeRef, {
-      [capitalizeRest(key)]: capitalizeRest(value)
-    });
-
-    console.log("Word Added:", key, "=", value);
+    if (mode === 'acronym') {
+      await updateDoc(activeRef, {
+        [key]: value
+      });
+      console.log("Acronym Added:", key, "=", value);
+    }
+    else {
+      await updateDoc(activeRef, {
+        [capitalizeRest(key)]: capitalizeRest(value)
+      });
+      console.log("Word Added:", key, "=", value);
+    }
   }
 
   themeToggle.addEventListener('click', () => {
